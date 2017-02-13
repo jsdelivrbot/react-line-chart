@@ -53,6 +53,7 @@ const CustomTooltip = React.createClass({
   }
 });
 
+// TODO: Why are propTypes always undefined?
 // CustomTooltip.propTypes = {
 //     type: PropTypes.string,
 //     payload: PropTypes.array,
