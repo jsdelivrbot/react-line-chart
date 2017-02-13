@@ -9,56 +9,8 @@ const customToolTipStyles = {
 		backgroundColor: "rgba(255, 255, 255, 0.8)",
 		width: 100,
 	    border: "1px solid"
-	},
-	heartRateText: {
-		color: "#1333a5"
-	},
-	heartRateLabel: {
-		fontSize: "0.7em",
-		fontStyle: "italic",
-	},
-	piText: {
-		color: "#f47d42"
-	},
-	piLabel: {
-		fontSize: "0.7em",
-		fontStyle: "italic",
-	},
-	bloodOxygenText: {
-		color: "#13a516"
-	},
-	bloodOxygenLabel: {
-		fontSize: "0.7em",
-		fontStyle: "italic",
 	}
 };
-
-const CustomTooltip = React.createClass({
-  render() {
-    const { active } = this.props;
-
-    if (active) {
-      const { payload} = this.props;
-      return (
-        <div style={customToolTipStyles.area}>
-        	{ `${ payload[0].payload['measuredAt'] }` }<br />
-          	<span style={customToolTipStyles.heartRateText}>{`${payload[0].payload['heartRate']}`} <span style={customToolTipStyles.heartRateLabel}>bpm</span></span><br />
-          	<span style={customToolTipStyles.bloodOxygenText}>{`${payload[0].payload['bloodOxygen']}`} <span style={customToolTipStyles.bloodOxygenLabel}>%</span></span><br />
-          	<span style={customToolTipStyles.piText}>{`${payload[0].payload['pi']}`} <span style={customToolTipStyles.piLabel}>pi</span></span>
-        </div>
-      );
-    }
-
-    return null;
-  }
-});
-
-// TODO: Why are propTypes always undefined?
-// CustomTooltip.propTypes = {
-//     type: PropTypes.string,
-//     payload: PropTypes.array,
-//     label: PropTypes.string,
-//   };
 
 export default class App extends Component {
 	render() {
@@ -68,11 +20,11 @@ export default class App extends Component {
 					<XAxis dataKey="measuredAt" />
 					<YAxis />
 					<CartesianGrid strokeDasharray="3 3" />
-					<Tooltip content={<CustomTooltip/>} />
+					<Tooltip />
 					<Legend />
-					<Line type="monotone" dataKey="heartRate" stroke="#1333a5" />
-					<Line type="monotone" dataKey="bloodOxygen" stroke="#13a516" />
-					<Line type="monotone" dataKey="pi" stroke="#f47d42" />
+					<Line type="monotone" dataKey="heartRate" name="Heart Rate" unit=" bpm" stroke="#1333a5" />
+					<Line type="monotone" dataKey="bloodOxygen" name="Blood Oxygen" unit="%" stroke="#13a516" />
+					<Line type="monotone" dataKey="pi" name="Pi" stroke="#f47d42" />
 				</LineChart>
 			</div>
 	    );
