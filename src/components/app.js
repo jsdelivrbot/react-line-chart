@@ -2,22 +2,79 @@ import React, { Component } from 'react';
 import { CartesianGrid, Legend, LineChart, Line, Tooltip, XAxis, YAxis } from 'recharts';
 import moment from 'moment';
 
-export default class App extends Component {
+const customToolTipStyles = {
+	area: {
+		margin: 0,
+		padding: "10px",
+		backgroundColor: "rgba(255, 255, 255, 0.8)",
+		width: 100,
+	    border: "1px solid"
+	},
+	heartRateText: {
+		color: "#1333a5"
+	},
+	heartRateLabel: {
+		fontSize: "0.7em",
+		fontStyle: "italic",
+	},
+	piText: {
+		color: "#f47d42"
+	},
+	piLabel: {
+		fontSize: "0.7em",
+		fontStyle: "italic",
+	},
+	bloodOxygenText: {
+		color: "#13a516"
+	},
+	bloodOxygenLabel: {
+		fontSize: "0.7em",
+		fontStyle: "italic",
+	}
+};
+
+const CustomTooltip = React.createClass({
   render() {
-    return (
-		<div>
-			<LineChart width={1000} height={600} data={finalData} margin={{ top: 50, right: 20, left: 20, bottom: 50 }}>
-				<XAxis dataKey="measuredAt" />
-				<YAxis />
-				<CartesianGrid strokeDasharray="3 3" />
-				<Tooltip />
-				<Legend />
-				<Line type="monotone" dataKey="heartRate" stroke="#1333a5" />
-				<Line type="monotone" dataKey="bloodOxygen" stroke="#13a516" />
-				<Line type="monotone" dataKey="pi" stroke="#f47d42" />
-			</LineChart>
-		</div>
-    );
+    const { active } = this.props;
+
+    if (active) {
+      const { payload} = this.props;
+      return (
+        <div style={customToolTipStyles.area}>
+        	{ `${ payload[0].payload['measuredAt'] }` }<br />
+          	<span style={customToolTipStyles.heartRateText}>{`${payload[0].payload['heartRate']}`} <span style={customToolTipStyles.heartRateLabel}>bpm</span></span><br />
+          	<span style={customToolTipStyles.bloodOxygenText}>{`${payload[0].payload['bloodOxygen']}`} <span style={customToolTipStyles.bloodOxygenLabel}>%</span></span><br />
+          	<span style={customToolTipStyles.piText}>{`${payload[0].payload['pi']}`} <span style={customToolTipStyles.piLabel}>pi</span></span>
+        </div>
+      );
+    }
+
+    return null;
+  }
+});
+
+// CustomTooltip.propTypes = {
+//     type: PropTypes.string,
+//     payload: PropTypes.array,
+//     label: PropTypes.string,
+//   };
+
+export default class App extends Component {
+	render() {
+	    return (
+			<div>
+				<LineChart width={1000} height={600} data={finalData} margin={{ top: 50, right: 20, left: 20, bottom: 50 }}>
+					<XAxis dataKey="measuredAt" />
+					<YAxis />
+					<CartesianGrid strokeDasharray="3 3" />
+					<Tooltip content={<CustomTooltip/>} />
+					<Legend />
+					<Line type="monotone" dataKey="heartRate" stroke="#1333a5" />
+					<Line type="monotone" dataKey="bloodOxygen" stroke="#13a516" />
+					<Line type="monotone" dataKey="pi" stroke="#f47d42" />
+				</LineChart>
+			</div>
+	    );
   }
 }
 
